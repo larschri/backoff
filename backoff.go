@@ -83,7 +83,7 @@ func WithMultiplier(multiplier float64) func(*options) {
 
 // WithTerminate terminates the iteration when the max sleep duration as
 // configured by [WithMax] has been reached.
-func WithTerminate() func(*options) {
+func WithTerminate(t bool) func(*options) {
 	return func(o *options) {
 		o.terminate = true
 	}

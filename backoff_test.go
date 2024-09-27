@@ -72,7 +72,7 @@ func TestWithTerminate(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			var m mockSleep
 			after = m.after
-			opts := append(test.opts, WithTerminate())
+			opts := append(test.opts, WithTerminate(true))
 			n := 0
 			for _ = range Exponential(context.Background(), opts...) {
 				n++
@@ -85,7 +85,12 @@ func TestWithTerminate(t *testing.T) {
 }
 
 func ExampleExponential() {
-	for range Exponential(context.Background(), WithMax(4*time.Second)) {
+	for range Exponential(context.Background(),
+		WithMultiplier(2),    // configure multiplier - 2 is default
+		WithMin(time.Second), // configure initial wait time - 1 second is default
+		WithMax(time.Hour),   // configure max wait time - 1 hour is default
+		WithTerminate(false), // configure the loop to run forever
+	) {
 		if _, err := os.Hostname(); err == nil {
 			fmt.Println("yay, hostname")
 			break
